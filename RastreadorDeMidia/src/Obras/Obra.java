@@ -2,25 +2,62 @@ package Obras;
 
 import java.util.ArrayList;
 
-public abstract class Obra {
-    private String nome;
-    private int nota;
+public class Obra {
+    private long id;
+    private static long lastID = 0;
+    private String titulo;
+    private long somaNotas;
+    private long totalAvaliadores;
     private String descricao;
-    private ArrayList<String> Generos;
+    private ArrayList<String> generos;
 
-    public abstract String getNome();
+    public Obra(String titulo){
+        this.id = ++lastID;
+        this.titulo = titulo;
+    }
 
-    public abstract void setNome(String nome);
+    public long getID(){
+        return id;
+    }
 
-    public abstract int getNota();
-    
-    public abstract void setNota(int nota);
+    public String getTitulo(){
+        return titulo;
+    }
 
-    public abstract String getDescricao();
+    public void setTitulo(String titulo){
+        this.titulo = titulo;
+    }
 
-    public abstract void setDescricao(String descricao);
+    public double getNota(){
+        return somaNotas / totalAvaliadores;
+    }
 
-    public abstract ArrayList<String> getGeneros();
+    public void adicionarAvaliacao(int nota){
+        totalAvaliadores++;
+        somaNotas += nota;
+    }
 
-    public abstract void setGeneros(ArrayList<String> generos);
+    public void editarAvalicao(int ganhoNota){
+        somaNotas += ganhoNota;
+    }
+
+    public String getDescricao(){
+        return descricao;
+    }
+
+    public void setDescricao(String descricao){
+        this.descricao = descricao;
+    }
+
+    public ArrayList<String> getGeneros(){
+        return generos;
+    }
+
+    public void setGeneros(ArrayList<String> generos){
+        this.generos = generos;
+    }
+
+    public void adicionarGenero(String genero){
+        generos.add(genero);
+    }
 }
