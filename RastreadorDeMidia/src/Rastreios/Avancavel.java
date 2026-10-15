@@ -1,4 +1,4 @@
-package Obras;
+package Rastreios;
 
 public interface Avancavel {
     void avancar();
