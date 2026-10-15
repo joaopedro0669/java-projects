@@ -5,6 +5,7 @@ import Obras.Obra;
 public class Rastreio {
     private Obra obra;
     private int avaliacao = -1;
+    private Status status = Status.NAO_ASSISTIDO;
     
     public Rastreio(Obra obra){
         this.obra = obra;
@@ -18,5 +19,9 @@ public class Rastreio {
             obra.editarAvalicao(this.avaliacao - avaliacao);
         }
         this.avaliacao = avaliacao;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 }
