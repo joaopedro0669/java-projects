@@ -3,7 +3,7 @@ package Rastreios;
 import Obras.Obra;
 
 public class RastreioAvancavel extends Rastreio implements Avancavel {
-    int episodios = 0;
+    private int episodios = 0;
 
     public RastreioAvancavel(Obra obra){
         super(obra);
@@ -17,6 +17,5 @@ public class RastreioAvancavel extends Rastreio implements Avancavel {
     @Override
     public void setEpisodio(int episodio) {
         this.episodios = episodio;
-        
     }
 }
