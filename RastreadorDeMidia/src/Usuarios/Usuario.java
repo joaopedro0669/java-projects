@@ -48,17 +48,23 @@ public class Usuario {
     }
 
     public void adicionarObra(Obra obra){
-        //filtrar para evitar obras repetidas
-        //...
-
-        if(obra instanceof Filme){
-            obrasConsumidas.add(new Rastreio(obra));
+        boolean add = true;
+        for(Rastreio o : obrasConsumidas){
+            if (o.getObra().equals(obra)){
+                add = false;
+                break; 
+            }
         }
-        else if(obra instanceof Serie){
-            obrasConsumidas.add(new RastreioAvancavel(obra));
-        }
-        else if(obra instanceof Jogo){
-            obrasConsumidas.add(new RastreioProgressivo(obra));
+        if(add){
+            if(obra instanceof Filme){
+                obrasConsumidas.add(new Rastreio(obra));
+            }
+            else if(obra instanceof Serie){
+                obrasConsumidas.add(new RastreioAvancavel(obra));
+            }
+            else if(obra instanceof Jogo){
+                obrasConsumidas.add(new RastreioProgressivo(obra));
+            }
         }
     }
 }
