@@ -24,4 +24,12 @@ public class Rastreio {
     public void setStatus(Status status) {
         this.status = status;
     }
+
+    public Obra getObra() {
+        return obra;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
 }

@@ -18,4 +18,8 @@ public class RastreioAvancavel extends Rastreio implements Avancavel {
     public void setEpisodio(int episodio) {
         this.episodios = episodio;
     }
+
+    public int getEpisodios() {
+        return episodios;
+    }
 }

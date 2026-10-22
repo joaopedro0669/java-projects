@@ -9,6 +9,10 @@ public class RastreioProgressivo extends Rastreio implements Progressivo {
         super(obra);
     }
 
+    public int getMinutosJogados() {
+        return minutosJogados;
+    }
+
     @Override
     public void progredir(int minutos) {
         minutosJogados += minutos;
