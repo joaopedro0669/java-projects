@@ -99,6 +99,7 @@ public class App {
                         msg = new String("Nome de usuário ou senha incorretos.");
                     }
                 }
+                s.close();
             }
         }
     }
