@@ -13,20 +13,28 @@ public class App {
         
         LinkedList<Usuario> usuarios = new LinkedList<>();
         LinkedList<Obra> obras = new LinkedList<>();
+
         Usuario userAtivo;
         boolean loggedIn = false;
 
+        String msg = null;
         boolean ativo = true;
         while(ativo){
             limparTela();
+
+            if(msg != null){
+                System.out.println(msg);
+                msg = null;
+            }
             
+            //não está logado
             if(!loggedIn){
                 Scanner s = new Scanner(System.in);
                 System.out.println("1 - Cadastrar\n2 - Entrar");
                 String escolha = s.nextLine();
 
                 //Sistema de cadastrar
-                if(escolha.trim().equals("1")){
+                if (escolha.trim().equals("1")){
                     boolean nomeAprovado;
                     boolean senhaAprovada;
                     String nome = null;
@@ -66,6 +74,30 @@ public class App {
 
                     //Criar e adicionar usuário
                     usuarios.add(new Usuario(nome, senhaString));
+
+                    //Informar ao usuário
+                    msg = new String("Usuário criado com sucesso!");
+                }
+                else if (escolha.trim().equals("2")){
+                    String nome = null;
+                    String senhaString = null;
+
+                    System.out.print("Nome de usuário: ");
+                    nome = s.nextLine();
+                    char[] senha = console.readPassword("Senha: ");
+                    senhaString = new String(senha);
+
+                    for(Usuario u : usuarios){
+                        u.login(nome, senhaString);
+                        if(u.isLoggedIn()){
+                            userAtivo = u;
+                            loggedIn = true;
+                            break;
+                        }
+                    }
+                    if(!loggedIn){
+                        msg = new String("Nome de usuário ou senha incorretos.");
+                    }
                 }
             }
         }
