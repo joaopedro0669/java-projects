@@ -6,10 +6,10 @@ public class Obra {
     private long id;
     private static long lastID = 0;
     private String titulo;
-    private long somaNotas;
-    private long totalAvaliadores;
-    private String descricao;
-    private ArrayList<String> generos;
+    private long somaNotas = 0;
+    private long totalAvaliadores = 0;
+    private String descricao = "";
+    private ArrayList<String> generos = new ArrayList<>();
 
     public Obra(String titulo){
         this.id = ++lastID;
@@ -29,7 +29,10 @@ public class Obra {
     }
 
     public double getNota(){
-        return somaNotas / totalAvaliadores;
+        if (totalAvaliadores != 0)
+            return somaNotas / totalAvaliadores;
+        else
+            return 0.0;
     }
 
     public void adicionarAvaliacao(int nota){
