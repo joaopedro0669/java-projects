@@ -75,6 +75,10 @@ public class App {
                     buscarObras(s, obras);
                 }
 
+                else if(escolha.trim().equals("2")){
+
+                }
+
                 else if(escolha.trim().equals("0")){
                     userAtivo = null;
                     loggedIn = false;
@@ -232,7 +236,7 @@ public class App {
             boolean achou = false;
             for(Obra o : obras){
                 if(o.getID() == escolhaIDLong){
-                    //mostrar dados da obra
+                    o.mostrarInfo();
                     achou = true;
                     break;
                 }
@@ -248,10 +252,16 @@ public class App {
         }
     }
 
+    static void criarObra(){
+        //implementar
+    }
+
     static void exemplo(LinkedList<Obra> obras){
         Obra o1 = new Filme("O Cavalo do Futuro", 120);
         Obra o2 = new Serie("Quebrando Ruim", 67);
         Obra o3 = new Jogo("Vermelho Morto");
+        o1.adicionarGenero("Comédia");
+        o1.adicionarGenero("ficção ");
 
         obras.add(o1);
         obras.add(o2);

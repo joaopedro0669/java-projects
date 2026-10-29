@@ -60,7 +60,16 @@ public class Obra {
         this.generos = generos;
     }
 
-    public void adicionarGenero(String genero){
+    public void adicionarGenero(String genero){ 
+        genero = genero.replaceAll("\\s+", "").toLowerCase();
         generos.add(genero);
+    }
+
+    public void mostrarInfo(){
+        System.out.println("ID: " + this.getID());
+        System.out.println("Título: " + this.getTitulo());
+        System.out.println("Descrição: " + this.getDescricao());
+        System.out.println("Nota: " + this.getNota());
+        System.out.println("Gêneros: " + this.getGeneros());
     }
 }
