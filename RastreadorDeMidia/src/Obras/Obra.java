@@ -2,18 +2,22 @@ package Obras;
 
 import java.util.ArrayList;
 
+import Usuarios.Usuario;
+
 public class Obra {
     private long id;
     private static long lastID = 0;
     private String titulo;
-    private long somaNotas;
-    private long totalAvaliadores;
-    private String descricao;
-    private ArrayList<String> generos;
+    private long somaNotas = 0;
+    private long totalAvaliadores = 0;
+    private String descricao = "";
+    private ArrayList<String> generos = new ArrayList<>();
+    private Usuario postadoPor = null;
 
-    public Obra(String titulo){
+    public Obra(String titulo, Usuario postadoPor){
         this.id = ++lastID;
         this.titulo = titulo;
+        this.postadoPor = postadoPor;
     }
 
     public long getID(){
@@ -29,7 +33,10 @@ public class Obra {
     }
 
     public double getNota(){
-        return somaNotas / totalAvaliadores;
+        if (totalAvaliadores != 0)
+            return somaNotas / totalAvaliadores;
+        else
+            return 0.0;
     }
 
     public void adicionarAvaliacao(int nota){
@@ -57,7 +64,16 @@ public class Obra {
         this.generos = generos;
     }
 
-    public void adicionarGenero(String genero){
+    public void adicionarGenero(String genero){ 
+        genero = genero.replaceAll("\\s+", "").toLowerCase();
         generos.add(genero);
+    }
+
+    public void mostrarInfo(){
+        System.out.println("ID: " + this.getID());
+        System.out.println("Título: " + this.getTitulo());
+        System.out.println("Descrição: " + this.getDescricao());
+        System.out.println("Nota: " + this.getNota());
+        System.out.println("Gêneros: " + this.getGeneros());
     }
 }

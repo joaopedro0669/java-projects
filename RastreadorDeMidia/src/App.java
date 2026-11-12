@@ -3,9 +3,11 @@ import Rastreios.*;
 import Usuarios.Usuario;
 
 import java.io.Console;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class App {
     public static void main(String[] args) throws Exception {
@@ -13,8 +15,9 @@ public class App {
         
         LinkedList<Usuario> usuarios = new LinkedList<>();
         LinkedList<Obra> obras = new LinkedList<>();
+        exemplo(obras);
 
-        Usuario userAtivo;
+        Usuario userAtivo = null;
         boolean loggedIn = false;
 
         String msg = null;
@@ -39,7 +42,7 @@ public class App {
                     cadastrarUsuario(s, console, usuarios);
 
                     //Informar ao usuário
-                    msg = new String("Usuário criado com sucesso!");
+                    msg = "Usuário criado com sucesso!";
                 }
 
                 //sistema de entrar
@@ -61,10 +64,31 @@ public class App {
                         }
                     }
                     if(!loggedIn){
-                        msg = new String("Nome de usuário ou senha incorretos.");
+                        msg = "Nome de usuário ou senha incorretos.";
+                    }
+                    else {
+                        msg = String.format("Seja bem-vindo, %s!", userAtivo.getNome());
                     }
                 }
                 
+            }
+            else {
+                System.out.println("1 - Buscar obras \n2 - Criar obras \n3 - Obras consumidas \n4 - Obras criadas \n0 - Sair");
+                String escolha = s.nextLine();
+
+                if(escolha.trim().equals("1")){
+                    buscarObras(s, obras);
+                }
+
+                else if(escolha.trim().equals("2")){
+
+                }
+
+                else if(escolha.trim().equals("0")){
+                    userAtivo.logout();
+                    userAtivo = null;
+                    loggedIn = false;
+                }
             }
         }
         s.close();
@@ -73,6 +97,18 @@ public class App {
     static void limparTela(){
         System.out.print("\033[H\033[2J");
         System.out.flush();
+    }
+
+    static String coletarTipo(Obra o){
+        String tipo = "Null";
+        if(o instanceof Filme)
+            tipo = "Filme";
+        else if(o instanceof Serie)
+            tipo = "Serie";
+        else if(o instanceof Jogo)
+            tipo = "Jogo";
+
+        return tipo;
     }
 
     static void cadastrarUsuario(Scanner s, Console console, LinkedList<Usuario> usuarios){
@@ -115,5 +151,170 @@ public class App {
 
         //Criar e adicionar usuário
         usuarios.add(new Usuario(nome, senhaString));
+    }
+
+    static void buscarObras(Scanner s, LinkedList<Obra> obras){
+        limparTela();
+
+        System.out.println("1 - Busca livre \n2 - Busca por gênero \n3 - Busca por ID \n0 - Voltar ao menu");
+        String escolha = s.nextLine();
+
+        //Busca livre
+        if(escolha.trim().equals("1")){
+            System.out.print("Digite: ");
+            String pesquisa = s.nextLine();
+            LinkedList<Obra> titulo = new LinkedList<>();
+            LinkedList<Obra> descricao = new LinkedList<>();
+            LinkedList<Obra> diretor = new LinkedList<>();
+            LinkedList<Obra> produtora = new LinkedList<>();
+            LinkedList<Obra> desenvolvedora = new LinkedList<>();
+            
+            System.out.println("Pesquisando...");
+            //filtrar
+            for(Obra o : obras){
+                //titulo
+                if (o.getTitulo().toLowerCase().contains(pesquisa.toLowerCase()))
+                    titulo.add(o);
+                
+                //descrição
+                if (o.getDescricao().toLowerCase().contains(pesquisa.toLowerCase()))
+                    descricao.add(o);
+
+                //diretor
+                if(o instanceof Filme f && f.getDiretor().toLowerCase().contains(pesquisa.toLowerCase()))
+                    diretor.add(o);
+
+                if(o instanceof Serie serie && serie.getDiretor().toLowerCase().contains(pesquisa.toLowerCase()))
+                    diretor.add(o);
+
+                //produtora
+                if(o instanceof Filme f && f.getProdutora().toLowerCase().contains(pesquisa.toLowerCase()))
+                    produtora.add(o);
+
+                if(o instanceof Serie serie && serie.getProdutora().toLowerCase().contains(pesquisa.toLowerCase()))
+                    produtora.add(o);
+
+                //desenvolvedora
+                if(o instanceof Jogo j && j.getDesenvolvedora().toLowerCase().contains(pesquisa.toLowerCase()))
+                    desenvolvedora.add(o);
+            }
+            
+            //---mostrar
+            limparTela();
+            //título
+            System.out.printf("Titulo: \n%-4s | %-50s | %-4s | %-4s \n", "ID", "Título", "Nota", "Tipo");
+            for(Obra o : titulo){
+                String tipo = coletarTipo(o);
+                System.out.printf("%04d | %-50s | %.2f | %-4s \n", o.getID(), o.getTitulo(), o.getNota(), tipo);
+            }
+            
+            //descrição
+            System.out.printf("\nDescrição: \n%-4s | %-50s | %-4s | %-4s \n", "ID", "Título", "Nota", "Tipo");
+            for(Obra o : descricao){
+                String tipo = coletarTipo(o);
+                System.out.printf("%04d | %-50s | %.2f | %-4s \n", o.getID(), o.getTitulo(), o.getNota(), tipo);
+            }
+
+            //diretor
+            System.out.printf("\nDiretor: \n%-4s | %-50s | %-4s | %-4s \n", "ID", "Título", "Nota", "Tipo");
+            for(Obra o : diretor){
+                String tipo = coletarTipo(o);
+                System.out.printf("%04d | %-50s | %.2f | %-4s \n", o.getID(), o.getTitulo(), o.getNota(), tipo);
+            }
+
+            //produtora
+            System.out.printf("\nProdutora: \n%-4s | %-50s | %-4s | %-4s \n", "ID", "Título", "Nota", "Tipo");
+            for(Obra o : produtora){
+                String tipo = coletarTipo(o);
+                System.out.printf("%04d | %-50s | %.2f | %-4s \n", o.getID(), o.getTitulo(), o.getNota(), tipo);
+            }
+
+            //desenvolvedora
+            System.out.printf("\nDesenvolvedora: \n%-4s | %-50s | %-4s | %-4s \n", "ID", "Título", "Nota", "Tipo");
+            for(Obra o : desenvolvedora){
+                String tipo = coletarTipo(o);
+                System.out.printf("%04d | %-50s | %.2f | %-4s \n", o.getID(), o.getTitulo(), o.getNota(), tipo);
+            }
+
+            buscaPorID(s, obras);
+        }
+
+        //Busca por gênero
+        else if(escolha.trim().equals("2")){
+            System.out.print("Digite: ");
+            String pesquisa = s.nextLine();
+            ArrayList<String> generos = Arrays.stream(pesquisa.toLowerCase().split(",")).map(String::trim).collect(Collectors.toCollection(ArrayList::new));
+            LinkedList<Obra> obrasBuscadas = new LinkedList<>();
+            for(Obra o : obras){
+                boolean apto = true;
+                for(String gen1 : generos){
+                    boolean achou = false;
+                    for(String gen2 : o.getGeneros()){
+                        if(gen1.equals(gen2))
+                            achou = true;
+                    }
+                    if(!achou)
+                        apto = false;
+                }
+                if(apto)
+                    obrasBuscadas.add(o);
+            }
+
+            System.out.printf("\n%-4s | %-50s | %-4s | %-4s \n", "ID", "Título", "Nota", "Tipo");
+            for(Obra o : obrasBuscadas){
+                String tipo = coletarTipo(o);
+                System.out.printf("%04d | %-50s | %.2f | %-4s \n", o.getID(), o.getTitulo(), o.getNota(), tipo);
+            }
+
+            buscaPorID(s, obras);
+        }
+        
+        //Busca por ID
+        else if(escolha.trim().equals("3")){
+            buscaPorID(s, obras);
+        }
+    }
+
+    static void buscaPorID(Scanner s, LinkedList<Obra> obras){
+        System.out.print("\nDigite o ID: ");
+        String escolhaIDString = s.nextLine();
+        long escolhaIDLong = Long.parseLong(escolhaIDString.trim());
+        boolean achou = false;
+        for(Obra o : obras){
+            if(o.getID() == escolhaIDLong){
+                o.mostrarInfo();
+                achou = true;
+                break;
+            }
+        }
+        if(!achou){
+            System.out.println("Obra não encontrada.\nPressione ENTER para prosseguir...");
+            s.nextLine();
+
+        }
+        else{
+            System.out.println("1 - Adicionar ao meu perfil \n0 - Voltar ao menu");
+            String escolha = s.nextLine();
+
+            if(escolha.trim().equals("1")){
+                System.out.println("Em breve...");
+            }
+        }
+    }
+
+    static void criarObra(){
+        //implementar
+    }
+
+    static void exemplo(LinkedList<Obra> obras){
+        Obra o1 = new Filme("O Cavalo do Futuro", 120);
+        Obra o2 = new Serie("Quebrando Ruim", 67);
+        Obra o3 = new Jogo("Vermelho Morto");
+        o1.adicionarGenero("Comédia");
+        o1.adicionarGenero("ficção ");
+
+        obras.add(o1);
+        obras.add(o2);
+        obras.add(o3);
     }
 }
