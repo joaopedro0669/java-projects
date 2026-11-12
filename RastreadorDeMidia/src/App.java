@@ -3,9 +3,11 @@ import Rastreios.*;
 import Usuarios.Usuario;
 
 import java.io.Console;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class App {
     public static void main(String[] args) throws Exception {
@@ -64,11 +66,14 @@ public class App {
                     if(!loggedIn){
                         msg = "Nome de usuário ou senha incorretos.";
                     }
+                    else {
+                        msg = String.format("Seja bem-vindo, %s!", userAtivo.getNome());
+                    }
                 }
                 
             }
             else {
-                System.out.println("1 - Buscar obras \n2 - Criar obras \n3 - Consumir obras \n4 - Obras criadas \n0 - Sair");
+                System.out.println("1 - Buscar obras \n2 - Criar obras \n3 - Obras consumidas \n4 - Obras criadas \n0 - Sair");
                 String escolha = s.nextLine();
 
                 if(escolha.trim().equals("1")){
@@ -80,6 +85,7 @@ public class App {
                 }
 
                 else if(escolha.trim().equals("0")){
+                    userAtivo.logout();
                     userAtivo = null;
                     loggedIn = false;
                 }
@@ -150,7 +156,7 @@ public class App {
     static void buscarObras(Scanner s, LinkedList<Obra> obras){
         limparTela();
 
-        System.out.println("1 - Busca livre \n2 - Buscar por gênero");
+        System.out.println("1 - Busca livre \n2 - Busca por gênero \n3 - Busca por ID \n0 - Voltar ao menu");
         String escolha = s.nextLine();
 
         //Busca livre
@@ -230,25 +236,69 @@ public class App {
                 System.out.printf("%04d | %-50s | %.2f | %-4s \n", o.getID(), o.getTitulo(), o.getNota(), tipo);
             }
 
-            System.out.print("\nDigite o ID: ");
-            String escolhaIDString = s.nextLine();
-            long escolhaIDLong = Long.parseLong(escolhaIDString.trim());
-            boolean achou = false;
-            for(Obra o : obras){
-                if(o.getID() == escolhaIDLong){
-                    o.mostrarInfo();
-                    achou = true;
-                    break;
-                }
-            }
-            if(!achou){
-                System.out.println("Obra não encontrada.");
-            }
+            buscaPorID(s, obras);
         }
 
         //Busca por gênero
         else if(escolha.trim().equals("2")){
-            System.out.println("Em breve...");
+            System.out.print("Digite: ");
+            String pesquisa = s.nextLine();
+            ArrayList<String> generos = Arrays.stream(pesquisa.toLowerCase().split(",")).map(String::trim).collect(Collectors.toCollection(ArrayList::new));
+            LinkedList<Obra> obrasBuscadas = new LinkedList<>();
+            for(Obra o : obras){
+                boolean apto = true;
+                for(String gen1 : generos){
+                    boolean achou = false;
+                    for(String gen2 : o.getGeneros()){
+                        if(gen1.equals(gen2))
+                            achou = true;
+                    }
+                    if(!achou)
+                        apto = false;
+                }
+                if(apto)
+                    obrasBuscadas.add(o);
+            }
+
+            System.out.printf("\n%-4s | %-50s | %-4s | %-4s \n", "ID", "Título", "Nota", "Tipo");
+            for(Obra o : obrasBuscadas){
+                String tipo = coletarTipo(o);
+                System.out.printf("%04d | %-50s | %.2f | %-4s \n", o.getID(), o.getTitulo(), o.getNota(), tipo);
+            }
+
+            buscaPorID(s, obras);
+        }
+        
+        //Busca por ID
+        else if(escolha.trim().equals("3")){
+            buscaPorID(s, obras);
+        }
+    }
+
+    static void buscaPorID(Scanner s, LinkedList<Obra> obras){
+        System.out.print("\nDigite o ID: ");
+        String escolhaIDString = s.nextLine();
+        long escolhaIDLong = Long.parseLong(escolhaIDString.trim());
+        boolean achou = false;
+        for(Obra o : obras){
+            if(o.getID() == escolhaIDLong){
+                o.mostrarInfo();
+                achou = true;
+                break;
+            }
+        }
+        if(!achou){
+            System.out.println("Obra não encontrada.\nPressione ENTER para prosseguir...");
+            s.nextLine();
+
+        }
+        else{
+            System.out.println("1 - Adicionar ao meu perfil \n0 - Voltar ao menu");
+            String escolha = s.nextLine();
+
+            if(escolha.trim().equals("1")){
+                System.out.println("Em breve...");
+            }
         }
     }
 

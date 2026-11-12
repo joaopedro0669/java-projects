@@ -2,6 +2,8 @@ package Obras;
 
 import java.util.ArrayList;
 
+import Usuarios.Usuario;
+
 public class Obra {
     private long id;
     private static long lastID = 0;
@@ -10,10 +12,12 @@ public class Obra {
     private long totalAvaliadores = 0;
     private String descricao = "";
     private ArrayList<String> generos = new ArrayList<>();
+    private Usuario postadoPor = null;
 
-    public Obra(String titulo){
+    public Obra(String titulo, Usuario postadoPor){
         this.id = ++lastID;
         this.titulo = titulo;
+        this.postadoPor = postadoPor;
     }
 
     public long getID(){
