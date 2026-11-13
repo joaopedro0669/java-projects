@@ -7,14 +7,21 @@ import Rastreios.RastreioAvancavel;
 import Rastreios.RastreioProgressivo;
 
 public class Usuario {
+    private long ID;
+    private static long nextID = 1;
     private String nome;
     private String senha;
     private boolean loggedIn = false;
     private LinkedList<Rastreio> obrasConsumidas;
 
     public Usuario(String nome, String senha){
+        this.ID = nextID++;
         this.nome = nome;
         this.senha = senha;
+    }
+
+    public long getID(){
+        return ID;
     }
 
     public void setNome(String nome){

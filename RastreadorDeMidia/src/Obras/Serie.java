@@ -1,12 +1,15 @@
 package Obras;
 
+import Usuarios.Usuario;
+
 public class Serie extends Obra {
     private String diretor = "";
     private String produtora = "";
     private int episodios;
+    private Usuario postadoPor = null;
 
-    public Serie(String titulo, int episodios){
-        super(titulo);
+    public Serie(String titulo, Usuario postadoPor, int episodios){
+        super(titulo, postadoPor);
         this.episodios = episodios;
     }
 

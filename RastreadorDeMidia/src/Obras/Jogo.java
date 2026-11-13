@@ -1,12 +1,15 @@
 package Obras;
 
+import Usuarios.Usuario;
+
 public class Jogo extends Obra {
     private String desenvolvedora = "";
     private long somaDuracao;
     private long totalJogadores;
+    private Usuario postadoPor = null;
     
-    public Jogo(String titulo){
-        super(titulo);
+    public Jogo(String titulo, Usuario postadoPor){
+        super(titulo, postadoPor);
     }
 
     public long getDuracaoMedia() {

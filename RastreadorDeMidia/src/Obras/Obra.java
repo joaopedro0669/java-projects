@@ -75,5 +75,6 @@ public class Obra {
         System.out.println("Descrição: " + this.getDescricao());
         System.out.println("Nota: " + this.getNota());
         System.out.println("Gêneros: " + this.getGeneros());
+        System.out.println("Postado por: " + postadoPor.getNome());
     }
 }
