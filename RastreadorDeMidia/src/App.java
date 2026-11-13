@@ -81,6 +81,14 @@ public class App {
                 }
 
                 else if(escolha.trim().equals("2")){
+                    msg = criarObra(s, obras, userAtivo);
+                }
+
+                else if(escolha.trim().equals("3")){
+
+                }
+
+                else if(escolha.trim().equals("4")){
 
                 }
 
@@ -280,6 +288,7 @@ public class App {
         String escolhaIDString = s.nextLine();
         long escolhaIDLong = Long.parseLong(escolhaIDString.trim());
         boolean achou = false;
+        limparTela();
         for(Obra o : obras){
             if(o.getID() == escolhaIDLong){
                 o.mostrarInfo();
@@ -302,14 +311,38 @@ public class App {
         }
     }
 
-    static void criarObra(){
-        //implementar
+    static String criarObra(Scanner s, LinkedList<Obra> obras, Usuario userAtivo){
+        limparTela();
+        System.out.println("O que deseja adicionar ao catálogo do software? \n1 - Filme \n2 - Série \n3 - Jogo ");
+        String escolha = s.nextLine();
+        System.out.print("Digite o nome: ");
+        String nome = s.nextLine();
+        if(escolha.trim().equals("1")){
+            System.out.print("Digite a duração do filme (em minutos): ");
+            int duracao = Integer.parseInt(s.nextLine());
+            Obra nova = new Filme(nome, userAtivo, duracao);
+            obras.add(nova);
+            return String.format("Filme %s com ID %d criado.", nome, nova.getID());
+        }
+        else if(escolha.trim().equals("2")){
+            System.out.print("Digite a quantidade de episódios da série: ");
+            int eps = Integer.parseInt(s.nextLine());
+            Obra nova = new Serie(nome, userAtivo, eps);
+            obras.add(nova);
+            return String.format("Série %s com ID %d criada.", nome, nova.getID());
+        }
+        else if(escolha.trim().equals("3")){
+            Obra nova = new Jogo(nome, userAtivo);
+            obras.add(nova);
+            return String.format("Jogo %s com ID %d criado.", nome, nova.getID());
+        }
+        return "Nenhum tipo válido selecionado.";
     }
 
     static void exemplo(LinkedList<Obra> obras){
-        Obra o1 = new Filme("O Cavalo do Futuro", 120);
-        Obra o2 = new Serie("Quebrando Ruim", 67);
-        Obra o3 = new Jogo("Vermelho Morto");
+        Obra o1 = new Filme("O Cavalo do Futuro", null, 120);
+        Obra o2 = new Serie("Quebrando Ruim", null, 67);
+        Obra o3 = new Jogo("Vermelho Morto", null);
         o1.adicionarGenero("Comédia");
         o1.adicionarGenero("ficção ");
 
